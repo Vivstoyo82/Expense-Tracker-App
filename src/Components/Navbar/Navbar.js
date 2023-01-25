@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {NavLink} from 'react-router-dom';
 import classes from '../Navbar/Navbar.module.css';
+import AuthContext from '../Store/auth-context';
 
 const Navbar = () => {
+
+  const authCtx = useContext(AuthContext)
+
   return (
     <div className={classes.mainNav}>
       <nav>
@@ -33,12 +37,12 @@ const Navbar = () => {
           </li>
 
           <li>
-            <NavLink
+            {authCtx.isLoggedIn && authCtx.displayName && (<NavLink
               to='/profile'
               className={classes.active}
             >
               User Profile
-            </NavLink>
+            </NavLink>)}
           </li>
           <li>
             <NavLink

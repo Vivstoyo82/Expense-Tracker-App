@@ -1,11 +1,11 @@
 import React, { useRef, useContext} from 'react';
 import AuthContext from '../Store/auth-context';
-
+import { useNavigate } from 'react-router-dom';
 import classes from './UserProfileForm.module.css';
 
 const UserProfileForm = () => {
     const authCtx = useContext(AuthContext);
-
+    const navigate = useNavigate();
     const inputNameRef = useRef("");
     const inputImageRef = useRef("");
   
@@ -42,6 +42,7 @@ const UserProfileForm = () => {
         //   authCtx.completeProfile();
           console.log(data);
           alert("profile updated successfully");
+          navigate.replace("/home");
         })
         .catch((err) => {
           alert(err.message);
