@@ -1,0 +1,30 @@
+.mainProfile {
+    display: flex;
+    margin-top: 15px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #06d6a0;
+    font-style: italic;
+    font-size: 25px;
+    align-items: center;
+  }
+  
+  .welcome {
+    margin-left: 30px;
+    flex-basis: 75%;
+    content: "Benjamin Franklin";
+  }
+  
+  .profile {
+    font-size: 15px;
+    flex-basis: 25%;
+    background-color: #06d6a0;
+    border-radius: 20px;
+    margin-right: 5px;
+    padding: 5px 10px 5px 10px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  
+  .profile a {
+    text-decoration: none;
+  }

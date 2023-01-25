@@ -3,6 +3,7 @@ import AuthContext from "./auth-context";
 
 const AuthProvider = (props) => {
   const [token, setToken] = useState(null);
+  const [profile, setProfile] = useState(false);
 
   const userLoggedIn = !!token;
 
@@ -10,10 +11,17 @@ const AuthProvider = (props) => {
     setToken(token);
   };
 
+  const completeProfileHandler = () => {
+    setProfile((previous) => {
+      return !previous;
+    });
+  };
+
   const contextValue = {
     token: token,
     isLoggedIn: userLoggedIn,
     login: loginHandler,
+    completeProfile: completeProfileHandler,
   };
 
   return (
