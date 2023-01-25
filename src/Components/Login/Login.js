@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 // import { useDispatch } from 'react-redux';
 import AuthContext from '../Store/auth-context';
 import classes from './Login.module.css';
-// import { loginActions } from '../store/loginSlice';
+import { useNavigate } from 'react-router-dom'
 import LoginMessage from '../Login/LoginMessage';
 
 const Login = () => {
@@ -11,6 +11,7 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
+  const navigate = useNavigate();
 
   const authCtx = useContext(AuthContext);
 
@@ -63,7 +64,8 @@ const Login = () => {
       })
       .then((data) => {
         authCtx.login(data.idToken);
-        console.log(data.idToken);
+        // console.log(data.idToken);
+        navigate.replace("/completeProfile")
         console.log("user has successfully signed up");
       })
       .catch((err) => {

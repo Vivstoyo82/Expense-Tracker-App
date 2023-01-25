@@ -22,7 +22,7 @@ const UserProfileForm = () => {
             idToken: authCtx.token,
             displayName: enteredName,
             photoUrl: enteredImage,
-            deleteAttribute: ["DISPLAY_NAME", "PHOTO_URL"],
+            deleteAttribute: [],
             returnSecureToken: true,
           }),
           headers: {
@@ -39,7 +39,7 @@ const UserProfileForm = () => {
           }
         })
         .then((data) => {
-          authCtx.completeProfile();
+        //   authCtx.completeProfile();
           console.log(data);
           alert("profile updated successfully");
         })
@@ -55,9 +55,11 @@ const UserProfileForm = () => {
       </div>
       <div className={classes.formBody}>
         <label>Full Name:</label>
-        <input type='text' ref={inputNameRef} />
-        <label>Profile Photo URL:</label>
-        <input type='text' ref={inputImageRef} />
+        <input type='text' ref={inputNameRef} defaultValue={authCtx.displayName} />
+
+        <label htmlFor="formGroupExampleInput2" >Profile Photo URL:</label>
+        <input type='text' ref={inputImageRef} defaultValue={authCtx.imageUrl} />
+
         <div className={classes.button}>
           <button type='submit'>Update</button>
         </div>
