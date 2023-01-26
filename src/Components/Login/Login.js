@@ -12,6 +12,7 @@ const Login = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const navigate = useNavigate();
+  // console.log("Inside Login")
 
   const authCtx = useContext(AuthContext);
 
@@ -65,8 +66,9 @@ const Login = () => {
       .then((data) => {
         authCtx.login(data.idToken);
         // console.log(data.idToken);
-        navigate.replace("/completeProfile")
-        console.log("user has successfully signed up");
+        navigate("/home")
+        // return <Navigate to="/login" replace={true} />
+        // console.log("user has successfully signed up");
       })
       .catch((err) => {
         alert(err.message);

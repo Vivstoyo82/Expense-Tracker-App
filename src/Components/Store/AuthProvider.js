@@ -20,11 +20,11 @@ const AuthProvider = (props) => {
         },
       }
     )
-      .then((response) => {
-        return response.json().then((data) => {
-          setDisplayName(data.users[0].displayName);
-          setPhoto(data.users[0].photoUrl);
-        });
+      .then(async (response) => {
+        const data = await response.json();
+        // console.log(data)
+        setDisplayName(data.users[0].displayName);
+        setPhoto(data.users[0].photoUrl);
       })
       .catch((err) => {
         alert(err.error.message);

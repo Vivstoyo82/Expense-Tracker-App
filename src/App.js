@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import Home from './Components/Pages/Home';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import UserProfile from './Components/UserProfiles/UserProfile';
+import ForgotPassword from './Components/Login/ForgotPassword';
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
         />
 
         <Route path='/login' element={<Login />} />
-        {/* <Route path='/resetpassword' element={<ForgotPassword />} /> */}
+        <Route path='/resetpassword' element={<ForgotPassword />} />
       </Routes>
     </div>
   );

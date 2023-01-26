@@ -11,7 +11,8 @@ const Navbar = () => {
 
   const logoutHandler = () => {
     authCtx.logout();
-    navigate("/login");
+    authCtx.isLoggedIn = false
+    navigate("/login", {replace : true});
   };
 
   return (

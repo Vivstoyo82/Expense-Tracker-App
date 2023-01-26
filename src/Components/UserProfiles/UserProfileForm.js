@@ -42,7 +42,7 @@ const UserProfileForm = () => {
         //   authCtx.completeProfile();
           console.log(data);
           alert("profile updated successfully");
-          navigate.replace("/home");
+          navigate("/home");
         })
         .catch((err) => {
           alert(err.message);
