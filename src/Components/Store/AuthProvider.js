@@ -37,6 +37,10 @@ const AuthProvider = (props) => {
     localStorage.setItem("token", token);
   };
 
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+  };
+
   // const completeProfileHandler = () => {
   //   setProfile((previous) => {
   //     return !previous;
@@ -49,6 +53,7 @@ const AuthProvider = (props) => {
     login: loginHandler,
     displayName: displayName,
     imageUrl: photo,
+    logout : logoutHandler
     // completeProfile: completeProfileHandler,
   };
 
