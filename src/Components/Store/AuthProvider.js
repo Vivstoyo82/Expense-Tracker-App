@@ -6,6 +6,7 @@ const AuthProvider = (props) => {
   const [token, setToken] = useState(initialToken);
   const [displayName, setDisplayName] = useState("");
   const [photo, setPhoto] = useState("");
+  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -41,6 +42,11 @@ const AuthProvider = (props) => {
     localStorage.removeItem("token");
   };
 
+  const addExpenseHandler = (expense) => {
+    setExpenses((prev) => {
+      return [...prev, expense];
+    });
+  };
   // const completeProfileHandler = () => {
   //   setProfile((previous) => {
   //     return !previous;
@@ -52,8 +58,10 @@ const AuthProvider = (props) => {
     isLoggedIn: userLoggedIn,
     login: loginHandler,
     displayName: displayName,
+    expenses : expenses,
     imageUrl: photo,
-    logout : logoutHandler
+    logout : logoutHandler,
+    addExpenseHandler : addExpenseHandler,
     // completeProfile: completeProfileHandler,
   };
 

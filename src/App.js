@@ -7,6 +7,7 @@ import Home from './Components/Pages/Home';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import UserProfile from './Components/UserProfiles/UserProfile';
 import ForgotPassword from './Components/Login/ForgotPassword';
+import Expenses from './Components/Expenses/Expenses';
 
 function App() {
 
@@ -22,10 +23,10 @@ function App() {
         <Route path='/' exact element={<Navigate replace to='/home' />} />
         <Route path='/home' element={<Home />} />
 
-        {/* <Route
+        <Route
           path='/expenses'
           element={isLoggedIn ? <Expenses /> : <Navigate to='/login' replace />}
-        /> */}
+        />
 
         {/* <Route path='/about' element={<About />} /> */}
 
