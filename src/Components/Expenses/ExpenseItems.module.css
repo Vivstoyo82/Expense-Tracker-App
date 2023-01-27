@@ -2,6 +2,7 @@
     padding: 10px 0 10px 0;
     display: flex;
     text-align: center;
+    margin-top: 10px;
   }
   
   .item .type, .item .amount {
@@ -19,8 +20,13 @@
   }
   
   .button button {
-    margin: 0 5px 0 5px;
+    margin: 0 8px 0 20px;
     font-weight: bold;
+    border-radius: 10px;
+    background-color:aqua;
+    border-color: aqua;
+    height: 30px;
+    width: 60px;
   }
   
   .button button:active {

@@ -30,6 +30,7 @@ const Expenses = () => {
   const newExpenseList = authCtx.expenses.map((expense) => {
     total = total + +expense.amount
     return (<ExpenseItems
+      key={expense.id}
       amount={expense.amount}
       description={expense.description}
       category={expense.category}

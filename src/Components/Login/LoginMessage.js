@@ -52,11 +52,11 @@ const LoginMessage = () => {
                     </Link>
                 </span>
             </div>
-            <div className={classes.button}>
+            {!authCtx.verified && (<div className={classes.button}>
                 <button onClick={verifyEmailHandler} className={classes.logout}>
                     Verify Email
                 </button>
-            </div>
+            </div>)}
         </React.Fragment>
     );
 };

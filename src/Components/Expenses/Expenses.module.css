@@ -1,8 +1,8 @@
 .form {
     width: 500px;
     margin: auto;
-    border: 2px solid black;
-    box-shadow: 0 0 10px black;
+    border: 2px solid slateblue;
+    box-shadow: 0 0 30px #06d6a0;
     box-sizing: border-box;
     border-radius: 5px;
     margin-top: 50px;
@@ -23,12 +23,18 @@
     width: 65%;
     box-sizing: border-box;
     padding: 5px 5px 5px 5px;
+    font-weight: 550;
+    color: black;
+    border-color: slateblue;
   }
   
   .type label,
   .amount label,
   .description label {
     width: 35%;
+    font-weight: 700;
+    color: purple;
+   
   }
   
   .description textarea {
@@ -38,12 +44,16 @@
   .button {
     text-align: center;
     margin-top: 30px;
+    
   }
   
   .button button {
     width: 30%;
     padding: 5px 0 5px 0;
     font-size: 18px;
+    background-color: #06d6a0;
+    border-radius: 10px;
+    border-color: #06d6a0;
   }
   
   .button button:active {
@@ -90,5 +100,5 @@
     flex-basis: 25%;
     text-align: center;
     font-size: 15px;
-    border-radius: 5px;
+    border-radius: 10px;
   }
