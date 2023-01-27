@@ -1,54 +1,33 @@
-import React from 'react';
-
+import React, { Fragment, useContext } from 'react';
+import AuthContext from '../Store/auth-context';
 import classes from './ExpenseItems.module.css';
 
 const ExpenseItems = (props) => {
 
-//   const editHandler = async() => {
-//     try{
-//       const res = await fetch(`https://expense-tracker-186ef-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${props.item.id}.json`,{
-//         method: 'DELETE'
-//       })
-//       const data = await res.json();
-//       if(res.ok) {
-//         props.edit(props.item)
-//       } else {
-//         throw data.error;
-//       }
-//     }
-//     catch(err) {
-//       console.log(err.message)
-//     }
-//   }
+    const authCtx = useContext(AuthContext);
+    const removeHandler = (props) => {
+        authCtx.removeExpense(props.id);
+    };
 
-//   const deleteHandler = async() => {
-//     try{
-//       const res = await fetch(`https://expense-tracker-186ef-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${props.item.id}.json`,{
-//         method: 'DELETE'
-//       })
-//       const data = await res.json();
-//       if(res.ok) {
-//         props.deleted(props.item)
-//       } else {
-//         throw data.error;
-//       }
-//     }
-//     catch(err) {
-//       console.log(err.message)
-//     }
-//   }
+    // console.log(props)
 
-  return (
-    <div key={props.id} className={classes.item}>
-      <span className={classes.type}>{props.category}</span>
-      <span className={classes.amount}>Rs. {props.amount}</span>
-      <span className={classes.description}>{props.description}</span>
-      <div className={classes.button}>
-        <button >Edit</button>
-        <button >Delete</button>
-      </div>
-    </div>
-  );
+    const editHandler = (props) => {
+        authCtx.showEdit(props.id);
+    };
+
+    return (
+        <Fragment>
+            <div key={props.id} className={classes.item}>
+                <span className={classes.type}>{props.category}</span>
+                <span className={classes.amount}>Rs. {props.amount}</span>
+                <span className={classes.description}>{props.description}</span>
+                <div className={classes.button}>
+                    <button onClick={editHandler}>Edit</button>
+                    <button onClick={removeHandler}>Delete</button>
+                </div>
+            </div>
+        </Fragment>
+    );
 };
 
 export default ExpenseItems;

@@ -52,7 +52,9 @@ const LoginMessage = () => {
                     </Link>
                 </span>
             </div>
+            {!authCtx.isLoggedIn && (<span className={classes.display}>JUST ONE STEP TO ADD YOUR EXPENSES 😃</span>)}
             {!authCtx.verified && (<div className={classes.button}>
+                
                 <button onClick={verifyEmailHandler} className={classes.logout}>
                     Verify Email
                 </button>

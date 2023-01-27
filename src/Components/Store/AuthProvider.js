@@ -8,6 +8,8 @@ const AuthProvider = (props) => {
   const [photo, setPhoto] = useState("");
   const [expenses, setExpenses] = useState([]);
   const [isVerified, setIsVerified] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [expenseId, setExpenseId] = useState(null);
   const userLoggedIn = !!token;
 
 
@@ -54,6 +56,47 @@ const AuthProvider = (props) => {
       // const data = await response.json();
     } catch (err) {
       alert(err);
+    }
+  };
+
+  const removeExpenseFromFirebase = async (id) => {
+    console.log(id);
+    try {
+      const response = await fetch(
+        `https://expense-tracker-186ef-default-rtdb.firebaseio.com/expenses/${id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        fetchExpenseFromFirebase();
+      }
+      const data = response.json();
+      console.log("expense deleted successfully");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const editExpenseInFirebase = async (expense) => {
+    try {
+      const response = await fetch(
+        `https://expense-tracker-186ef-default-rtdb.firebaseio.com/expenses/${expenseId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify(expense),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        fetchExpenseFromFirebase();
+        setExpenseId(null);
+        setEdit(false);
+      }
+    } catch (err) {
+      alert(err.message);
     }
   };
 
@@ -107,11 +150,24 @@ const AuthProvider = (props) => {
     });
     addExpenseToFirebase(expense);
   };
-  // const completeProfileHandler = () => {
-  //   setProfile((previous) => {
-  //     return !previous;
-  //   });
-  // };
+
+  const removeExpenseHandler = (id) => {
+    console.log(id)
+    removeExpenseFromFirebase(id);
+  };
+
+  const editExpenseHandler = (expense) => {
+    editExpenseInFirebase(expense);
+  };
+
+  const showEditForm = (id) => {
+    setEdit(true);
+    setExpenseId(id);
+  };
+
+  const hideEditForm = () => {
+    setEdit(false);
+  };
 
   const contextValue = {
     token: token,
@@ -124,6 +180,10 @@ const AuthProvider = (props) => {
     logout: logoutHandler,
     addExpenseHandler: addExpenseHandler,
     fetchExpense: fetchExpenseFromFirebase,
+    removeExpense: removeExpenseHandler,
+    editExpense: editExpenseHandler,
+    showEdit: showEditForm,
+    hideEdit: hideEditForm,
     // completeProfile: completeProfileHandler,
   };
 

@@ -31,6 +31,7 @@ const Expenses = () => {
     total = total + +expense.amount
     return (<ExpenseItems
       key={expense.id}
+      id={expense.id}
       amount={expense.amount}
       description={expense.description}
       category={expense.category}

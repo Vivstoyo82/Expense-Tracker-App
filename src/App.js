@@ -25,7 +25,7 @@ function App() {
 
         <Route
           path='/expenses'
-          element={isLoggedIn ? <Expenses /> : <Navigate to='/login' replace />}
+          element={isLoggedIn && authCtx.verified ? <Expenses /> : <Navigate to='/login' replace />}
         />
 
         {/* <Route path='/about' element={<About />} /> */}
@@ -33,7 +33,7 @@ function App() {
         <Route
           path='/profile'
           element={
-            isLoggedIn ? <UserProfile /> : <Navigate to='/login' replace />
+            isLoggedIn && authCtx.verified ? <UserProfile /> : <Navigate to='/login' replace />
           }
         />
 
