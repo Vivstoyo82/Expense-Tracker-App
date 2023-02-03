@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
-import AuthContext from '../Store/auth-context';
+import React from 'react';
 import LoginMessage from '../Login/LoginMessage';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
 
-  const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
 
   return (
     <div>

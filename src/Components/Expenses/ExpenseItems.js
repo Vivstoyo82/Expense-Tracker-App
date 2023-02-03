@@ -1,19 +1,43 @@
-import React, { Fragment, useContext } from 'react';
-import AuthContext from '../Store/auth-context';
+import React, { Fragment } from 'react';
 import classes from './ExpenseItems.module.css';
 
 const ExpenseItems = (props) => {
 
-    const authCtx = useContext(AuthContext);
-    const removeHandler = (props) => {
-        authCtx.removeExpense(props.id);
-    };
+    const removeHandler = async() => {
+        try{
+          const res = await fetch(`https://expense-tracker-186ef-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${props.item.id}.json`,{
+            method: 'DELETE'
+          })
+          const data = await res.json();
+          if(res.ok) {
+            props.deleted(props.item)
+          } else {
+            throw data.error;
+          }
+        }
+        catch(err) {
+          console.log(err.message)
+        }
+      }
 
     // console.log(props)
 
-    const editHandler = (props) => {
-        authCtx.showEdit(props.id);
-    };
+    const editHandler = async() => {
+        try{
+          const res = await fetch(`https://expense-tracker-186ef-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${props.item.id}.json`,{
+            method: 'DELETE'
+          })
+          const data = await res.json();
+          if(res.ok) {
+            props.edit(props.item)
+          } else {
+            throw data.error;
+          }
+        }
+        catch(err) {
+          console.log(err.message)
+        }
+      }
 
     return (
         <Fragment>

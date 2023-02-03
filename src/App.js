@@ -1,39 +1,37 @@
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import Login from './Components/Login/Login';
-import AuthContext from './Components/Store/auth-context';
-import { useContext } from 'react';
 import Home from './Components/Pages/Home';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import UserProfile from './Components/UserProfiles/UserProfile';
 import ForgotPassword from './Components/Login/ForgotPassword';
 import Expenses from './Components/Expenses/Expenses';
+import About from './Components/Expenses/About';
+import { useSelector } from 'react-redux';
 
 function App() {
 
-  const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const themeMode = useSelector((state) => state.theme.theme);
 
   return (
-    <div>
+    <div className={themeMode === 'dark' ? 'dark' : ''}>
       <Navbar />
-      {/* {authCtx.isLoggedIn && <Home />}
-      {!authCtx.isLoggedIn && <Login />} */}
       <Routes>
         <Route path='/' exact element={<Navigate replace to='/home' />} />
         <Route path='/home' element={<Home />} />
 
         <Route
           path='/expenses'
-          element={isLoggedIn && authCtx.verified ? <Expenses /> : <Navigate to='/login' replace />}
+          element={isLoggedIn ? <Expenses /> : <Navigate to='/login' replace />}
         />
 
-        {/* <Route path='/about' element={<About />} /> */}
+        <Route path='/about' element={<About />} />
 
         <Route
           path='/profile'
           element={
-            isLoggedIn && authCtx.verified ? <UserProfile /> : <Navigate to='/login' replace />
+            isLoggedIn ? <UserProfile /> : <Navigate to='/login' replace />
           }
         />
 

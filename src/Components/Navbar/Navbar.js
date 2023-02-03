@@ -1,17 +1,23 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import classes from '../Navbar/Navbar.module.css';
-import AuthContext from '../Store/auth-context';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginActions } from '../Store/loginSlice';
+import { themeActions } from '../Store/themeSlice';
+import { expenseAction } from '../Store/expenseSlice';
 
 const Navbar = () => {
 
-  const authCtx = useContext(AuthContext)
-  const isLoggedIn = authCtx.isLoggedIn;
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+
 
   const logoutHandler = () => {
-    authCtx.logout();
-    authCtx.isLoggedIn = false
+    dispatch(loginActions.logout());
+    dispatch(themeActions.light());
+    dispatch(themeActions.premium(false));
+    dispatch(expenseAction.firstTime(true));
     navigate("/login", {replace : true});
   };
 
@@ -45,7 +51,7 @@ const Navbar = () => {
           </li>
 
           <li>
-            {isLoggedIn && authCtx.displayName && (<Link
+            {isLoggedIn && (<Link
               to='/profile'
               className={classes.active}
             >
@@ -62,7 +68,7 @@ const Navbar = () => {
           </li>
         </ul>
       </nav>
-      {authCtx.isLoggedIn && (<div className={classes.button}>
+      {isLoggedIn && (<div className={classes.button}>
         <button onClick={logoutHandler}>Logout</button>
       </div>)}
     </div>

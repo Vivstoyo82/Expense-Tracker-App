@@ -1,42 +1,94 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useEffect} from 'react';
 import classes from './Expenses.module.css';
 import ExpenseItems from './ExpenseItems';
-import AuthContext from '../Store/auth-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { addingExpense } from '../Store/expense-actions';
+import { requestingExpense } from '../Store/expense-actions';
+import { expenseAction } from '../Store/expenseSlice';
 
 
 const Expenses = () => {
-  const authCtx = useContext(AuthContext);
   const inputAmountRef = useRef("");
   const inputDescriptionRef = useRef("");
   const inputCategoryRef = useRef("");
 
-  // const email = JSON.parse(localStorage.getItem('idToken')).email;
-  // const emailUrl = email.replace(/[@.]/g, '');
+  const dispatch = useDispatch();
+  const firstTime = useSelector((state) => state.expense.firstTime);
+  const expenseList = useSelector((state) => state.expense.expenses);
+  const totalAmount = useSelector((state) => state.expense.totalAmount);
 
+  const email = JSON.parse(localStorage.getItem('idToken')).email;
+  const emailUrl = email.replace(/[@.]/g, '');
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const expense = {
-      amount: inputAmountRef.current.value,
-      description: inputDescriptionRef.current.value,
-      category: inputCategoryRef.current.value,
-    };
-
-    authCtx.addExpenseHandler(expense);
+  // adding new expenses
+  const removeInputData = () => {
+    inputAmountRef.current.value = '';
+    inputCategoryRef.current.value = '';
+    inputDescriptionRef.current.value = '';
   };
 
-  let total = 0;
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    const inputData = {
+      amount: inputAmountRef.current.value,
+      category: inputCategoryRef.current.value,
+      description: inputDescriptionRef.current.value,
+    };
+
+    dispatch(addingExpense(inputData, emailUrl, removeInputData));
+  };
+
+  // showing expenses when page is refreshed
+  useEffect(() => {
+    if (firstTime) {
+      dispatch(requestingExpense(emailUrl));
+      // console.log(emailUrl);
+    }
+  }, [emailUrl, dispatch, firstTime]);
+
+  // editing the expense
+  const edit = (item) => {
+    const updatedAmount = totalAmount - Number(item.amount);
+    const updatedExpense = expenseList.filter(
+      (expense) => expense.id !== item.id
+    );
+    inputAmountRef.current.value = item.amount;
+    inputCategoryRef.current.value = item.type;
+    inputDescriptionRef.current.value = item.description;
+
+    dispatch(
+      expenseAction.removeExpense({
+        expenses: updatedExpense,
+        totalAmount: updatedAmount,
+      })
+    );
+  };
+
+  // deleting the expense
+  const deleted = (item) => {
+    const updatedAmount = totalAmount - Number(item.amount);
+    const updatedExpense = expenseList.filter(
+      (expense) => expense.id !== item.id
+    );
+    dispatch(
+      expenseAction.removeExpense({
+        expenses: updatedExpense,
+        totalAmount: updatedAmount,
+      })
+    );
+  };
+
   // mapping the expenses
-  const newExpenseList = authCtx.expenses.map((expense) => {
-    total = total + +expense.amount
-    return (<ExpenseItems
-      key={expense.id}
-      id={expense.id}
-      amount={expense.amount}
-      description={expense.description}
-      category={expense.category}
-    />);
-  });
+  const newExpenseList = expenseList.map((item) => (
+    <ExpenseItems
+      item={item}
+      key={item.id}
+      edit={edit}
+      deleted={deleted}
+      emailUrl={emailUrl}
+    />
+  ));
 
   // Expense Component
   return (
@@ -64,13 +116,13 @@ const Expenses = () => {
           <button type='submit'>Add Expense</button>
         </div>
       </form>
-      {authCtx.expenses.length > 0 && (
+      {expenseList.length > 0 && (
         <div className={classes.items}>
           <div className={classes.title}>
             <span className={classes.titletype}>Type</span>
             <span className={classes.titleamount}>Amount</span>
             <span className={classes.titledescription}>Description</span>
-            <span className={classes.total}>Total = Rs.{total}</span>
+            <span className={classes.total}>Total = Rs.{totalAmount}</span>
           </div>
           {newExpenseList}
         </div>

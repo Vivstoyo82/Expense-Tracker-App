@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import AuthContext from '../Store/auth-context';
 import classes from './LoginMessage.module.css';
+import { useSelector } from 'react-redux';
 
 
 const LoginMessage = () => {
 
-    const authCtx = useContext(AuthContext);
+    const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
 
     const verifyEmailHandler = async () => {
         fetch(
@@ -15,7 +15,7 @@ const LoginMessage = () => {
                 method: "POST",
                 body: JSON.stringify({
                     requestType: "VERIFY_EMAIL",
-                    idToken: authCtx.token,
+                    idToken: JSON.parse(localStorage.getItem('idToken')).idToken,
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -52,8 +52,8 @@ const LoginMessage = () => {
                     </Link>
                 </span>
             </div>
-            {!authCtx.isLoggedIn && (<span className={classes.display}>JUST ONE STEP TO ADD YOUR EXPENSES 😃</span>)}
-            {!authCtx.verified && (<div className={classes.button}>
+            {!isLoggedIn && (<span className={classes.display}>JUST ONE STEP TO ADD YOUR EXPENSES 😃</span>)}
+            {(<div className={classes.button}>
                 
                 <button onClick={verifyEmailHandler} className={classes.logout}>
                     Verify Email

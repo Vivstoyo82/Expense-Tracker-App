@@ -1,20 +1,17 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
-import AuthContext from '../Store/auth-context';
+import { useDispatch, useSelector } from 'react-redux';
 import classes from './Login.module.css';
-import { useNavigate } from 'react-router-dom'
 import LoginMessage from '../Login/LoginMessage';
+import { loginActions } from '../Store/loginSlice';
 
 const Login = () => {
   const [haveAccount, setHaveAccount] = useState(true);
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-  const navigate = useNavigate();
-  // console.log("Inside Login")
-
-  const authCtx = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
 
   const accountHandler = () => {
     setHaveAccount((preState) => {
@@ -34,8 +31,6 @@ const Login = () => {
 
   const loginFormHandler = async (event) => {
     event.preventDefault();
-    const enteredEmail = emailRef.current.value;
-    const enteredPassword = passwordRef.current.value;
 
     if (!haveAccount) {
       if (passwordRef.current.value !== confirmPasswordRef.current.value) {
@@ -43,39 +38,34 @@ const Login = () => {
       }
     }
 
-    fetch(url, {
-      method : "post",
-      body: JSON.stringify({
-        email: enteredEmail,
-        password: enteredPassword,
-        returnSecureToken: true,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          // const data = await response.json();
-          let errorMesssage = "Authentication Failed";
-          throw new Error(errorMesssage);
-        }
-      })
-      .then((data) => {
-        authCtx.login(data.idToken);
-        // console.log(data.idToken);
-        navigate("/home")
-        // return <Navigate to="/login" replace={true} />
-        // console.log("user has successfully signed up");
-      })
-      .catch((err) => {
-        alert(err.message);
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          returnSecureToken: true,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-};
 
-if (authCtx.isLoggedIn) {
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('idToken', JSON.stringify(data));
+        setHaveAccount(true);
+        dispatch(loginActions.login(data.email));
+      } else {
+        const data = await res.json();
+        throw data.error;
+      }
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+if (isLoggedIn) {
   return <LoginMessage />;
 }
 
