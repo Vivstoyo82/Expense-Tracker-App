@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import classes from '../Navbar/Navbar.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginActions } from '../Store/loginSlice';
@@ -11,6 +11,10 @@ const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const premium = useSelector((state) => state.theme.premium);
+  const togglebtn = useSelector((state) => state.theme.togglebtn);
+  const toggle = useSelector((state) => state.theme.toggle);
+  const expenses = useSelector((state) => state.expense.expenses);
 
 
   const logoutHandler = () => {
@@ -18,7 +22,23 @@ const Navbar = () => {
     dispatch(themeActions.light());
     dispatch(themeActions.premium(false));
     dispatch(expenseAction.firstTime(true));
-    navigate("/login", {replace : true});
+    navigate("/login", { replace: true });
+  };
+
+  const expenseList = expenses
+    .map((e) => {
+      return [e.description, e.category, e.amount];
+    })
+    .join("\n");
+  const blob = new Blob([expenseList]);
+  const ref = URL.createObjectURL(blob);
+
+  const themeHandler = () => {
+    dispatch(themeActions.showToggle());
+  };
+
+  const togglehemeHandler = () => {
+    dispatch(themeActions.switchToggle());
   };
 
   return (
@@ -67,10 +87,41 @@ const Navbar = () => {
             </Link>)}
           </li>
         </ul>
+        {/* {premium && isLoggedIn && (
+          <button
+            className={classes.button}
+            onClick={themeHandler}
+          >
+            {togglebtn ? "Premium" : "Activate Premium"}
+          </button>
+        )} */}
+        {/* {premium && togglebtn && isLoggedIn && (
+          <li className={classes.button}>
+            <button
+              className={classes.active}
+              onClick={togglehemeHandler}
+            >
+              {toggle ? "Light" : "Dark "}
+            </button>
+          </li>
+        )} */}
+
+        
       </nav>
-      {isLoggedIn && (<div className={classes.button}>
-        <button onClick={logoutHandler}>Logout</button>
-      </div>)}
+      {isLoggedIn && (
+          <li className={classes.active}>
+            <a
+              className={classes.active}
+              download="file.csv"
+              href={ref}
+            >
+              Download expenses
+            </a>
+          </li>
+        )}
+      {<li className={classes.button}>
+        {isLoggedIn && (<button onClick={logoutHandler}>Logout</button>)}
+      </li>}
     </div>
   )
 }

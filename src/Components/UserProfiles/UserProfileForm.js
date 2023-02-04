@@ -92,7 +92,7 @@ const UserProfileForm = () => {
       </div>
       <div className={classes.formBody}>
         <label>Full Name:</label>
-        <input type='text' ref={inputNameRef}  />
+        <input type='text' ref={inputNameRef} />
 
         <label htmlFor="formGroupExampleInput2" >Profile Photo URL:</label>
         <input type='text' ref={inputImageRef}  />

@@ -12,10 +12,10 @@ import { useSelector } from 'react-redux';
 function App() {
 
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
-  const themeMode = useSelector((state) => state.theme.theme);
+  const toggle = useSelector((state) => state.theme.toggle);
 
   return (
-    <div className={themeMode === 'dark' ? 'dark' : ''}>
+    <div className={toggle === 'dark' ? 'dark' : ''}>
       <Navbar />
       <Routes>
         <Route path='/' exact element={<Navigate replace to='/home' />} />

@@ -7,6 +7,9 @@ import { useSelector } from 'react-redux';
 const LoginMessage = () => {
 
     const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+    const isVerified = useSelector((state) => state.login.isVerified);
+    console.log(isVerified)
+
 
     const verifyEmailHandler = async () => {
         fetch(
@@ -52,7 +55,7 @@ const LoginMessage = () => {
                     </Link>
                 </span>
             </div>
-            {!isLoggedIn && (<span className={classes.display}>JUST ONE STEP TO ADD YOUR EXPENSES 😃</span>)}
+            {(<span className={classes.display}>JUST ONE STEP TO ADD YOUR EXPENSES 😃</span>)}
             {(<div className={classes.button}>
                 
                 <button onClick={verifyEmailHandler} className={classes.logout}>

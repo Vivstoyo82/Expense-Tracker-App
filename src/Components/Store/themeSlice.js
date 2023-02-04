@@ -1,28 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { theme: 'light', premium: false };
-
+const toggleBtn = localStorage.getItem("toggleBtn");
+const prime = localStorage.getItem("prime");
+const initialThemeState = {
+  togglebtn: toggleBtn,
+  toggle: false,
+  premium: prime,
+};
 const themeSlice = createSlice({
-  name: 'Theme',
-  initialState: initialState,
+  name: "theme",
+  initialState: initialThemeState,
   reducers: {
-    dark(state) {
-      state.theme = 'dark';
+    showToggle(state) {
+      state.togglebtn = true;
+      localStorage.setItem("toggleBtn", true);
     },
-    light(state) {
-      state.theme = 'light';
+    switchToggle(state) {
+      state.toggle = !state.toggle;
     },
-    premium(state, action) {
-      state.premium = action.payload;
-      if(action.payload) {
-        state.theme = 'dark';
-      }
-      if(!action.payload && state.theme === 'dark') {
-        state.theme = 'light';
-      }
+    premium(state) {
+      state.premium = true;
+      localStorage.setItem("prime", true);
+    },
+    nonPrime(state) {
+      localStorage.removeItem("toggleBtn");
+      localStorage.removeItem("prime");
     },
   },
 });
 
-export const themeActions = themeSlice.actions;
 export default themeSlice.reducer;
+export const themeActions = themeSlice.actions;

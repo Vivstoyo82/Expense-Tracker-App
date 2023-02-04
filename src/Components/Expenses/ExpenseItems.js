@@ -42,9 +42,9 @@ const ExpenseItems = (props) => {
     return (
         <Fragment>
             <div key={props.id} className={classes.item}>
-                <span className={classes.type}>{props.category}</span>
-                <span className={classes.amount}>Rs. {props.amount}</span>
-                <span className={classes.description}>{props.description}</span>
+                <span className={classes.type}>{props.item.category}</span>
+                <span className={classes.amount}>Rs. {props.item.amount}</span>
+                <span className={classes.description}>{props.item.description}</span>
                 <div className={classes.button}>
                     <button onClick={editHandler}>Edit</button>
                     <button onClick={removeHandler}>Delete</button>

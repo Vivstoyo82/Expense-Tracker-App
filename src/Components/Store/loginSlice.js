@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const loggedIn = localStorage.getItem('idToken') ? true : false;
-const initialState = { isLoggedIn: loggedIn };
+const initialVerified = localStorage.getItem("verified");
+
+const initialState = { isLoggedIn: loggedIn, isVerified : initialVerified };
 
 const loginSlice = createSlice({
   name: 'login',
@@ -13,6 +15,11 @@ const loginSlice = createSlice({
     logout(state) {
       state.isLoggedIn = false;
       localStorage.removeItem('idToken');
+      localStorage.removeItem("verified");
+    },
+    setIsVerified(state, action) {
+        state.isVerified = action.payload;
+        localStorage.setItem("verified", action.payload);
     },
   },
 });
